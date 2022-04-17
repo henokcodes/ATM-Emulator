@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'atm-emulator-springboot:latest'
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/atmemulator
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Passw0rd
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Passw0rd
+    ports:
+      - '5432:5432'
+
+volumes:
+  db:
+    driver: local
