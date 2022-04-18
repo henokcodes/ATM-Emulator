@@ -1,43 +1,43 @@
 package com.atm.emulator.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
+
+import com.atm.emulator.model.Transaction;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
 
 
     @Id
     @GeneratedValue
     private int id;
-    private int bankId;
-    private int customerId;
+
+    @ManyToOne
+    @JoinColumn(name="bank_id", nullable=false)
+    private Bank bank;
+
+    @OneToOne(mappedBy = "account")
+    private Customer customer;
+
     private String cardNumber;
     private String cardType;
     private double cardBalance;
     private String expireDate;
     private String issueDate;
 
-
-    public Account() {
-
-    }
-    public Account(int bankId, int customerId, String cardNumber, String cardType, double cardBalance, String expireDate, String issueDate) {
-        super();
-        this.bankId = bankId;
-        this.customerId = customerId;
-        this.cardNumber = cardNumber;
-        this.cardType = cardType;
-        this.cardBalance = cardBalance;
-        this.expireDate = expireDate;
-        this.issueDate = issueDate;
+    @OneToMany(mappedBy="account")
+    private Set<Transaction> transactions;
 
 
-    }
 }

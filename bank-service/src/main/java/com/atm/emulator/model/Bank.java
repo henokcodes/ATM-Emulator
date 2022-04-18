@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,6 +19,8 @@ public class Bank {
     private String name;
     private String address;
     private String code;
+    @OneToMany(mappedBy="bank")
+    private Set<Account> accounts;
 
     public Bank() {
 

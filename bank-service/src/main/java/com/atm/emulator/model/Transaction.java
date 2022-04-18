@@ -1,18 +1,21 @@
 package com.atm.emulator.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-    @Entity
+import javax.persistence.*;
+
+@Entity
+    @Getter
+    @Setter
     @Table(name = "transactions")
     public class Transaction {
-
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private long id;
-        private String cardNum;
+        @ManyToOne
+        @JoinColumn()
+        private Account account;
         private String transactionAmount;
         private String transactionStatus;
         private String transactionType;
@@ -28,38 +31,7 @@ import javax.persistence.Table;
             this.transactionType = transactionType;
         }
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        public long getId() {
-            return id;
-        }
-        public void setId(long id) {
-            this.id = id;
-        }
 
-        @Column(name = "transaction_amount", nullable = false)
-        public String getTransactionAmount() {
-            return transactionAmount;
-        }
-        public void setTransactionAmount(String transactionAmount) {
-            this.transactionAmount = transactionAmount;
-        }
-
-        @Column(name = "transaction_status", nullable = false)
-        public String getTransactionStatus() {
-            return transactionStatus;
-        }
-        public void setTransactionStatus(String transactionStatus) {
-            this.transactionStatus = transactionStatus;
-        }
-
-        @Column(name = "transaction_type", nullable = false)
-        public String getTransactionType() {
-            return transactionType;
-        }
-        public void setTransactionType(String transactionType) {
-            this.transactionType = transactionType;
-        }
 
         @Override
         public String toString() {

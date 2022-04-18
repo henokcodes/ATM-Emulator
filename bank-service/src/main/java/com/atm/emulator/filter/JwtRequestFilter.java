@@ -2,8 +2,7 @@ package com.atm.emulator.filter;
 
 import com.atm.emulator.service.MyUserDetailsService;
 import com.atm.emulator.util.JwtUtil;
-import io.javabrains.springsecurityjwt.MyUserDetailsService;
-import io.javabrains.springsecurityjwt.util.JwtUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
