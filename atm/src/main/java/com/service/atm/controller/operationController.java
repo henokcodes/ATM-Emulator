@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.service.atm.service.operationService;
+import com.service.atm.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class operationController {
 
     @Autowired
-    private operationService operationService;
+    private OperationService operationService;
 
     @PostMapping("/withdraw")
     public ResponseEntity<String> withdraw(double amount){
@@ -30,5 +30,9 @@ public class operationController {
     @PostMapping("/statement")
     public ResponseEntity<String> printStatement(){
         return this.operationService.printStatement();
+    }
+    @GetMapping("/logout")
+    public void logout(){
+        this.operationService.logout();
     }
 }
