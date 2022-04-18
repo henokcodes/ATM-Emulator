@@ -1,5 +1,6 @@
 package com.atm.emulator.filter;
 
+import com.atm.emulator.model.Account;
 import com.atm.emulator.service.MyUserDetailsService;
 import com.atm.emulator.util.JwtUtil;
 
@@ -43,7 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            Account userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
 

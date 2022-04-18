@@ -1,5 +1,6 @@
 package com.atm.emulator.service;
 
+import com.atm.emulator.model.Account;
 import com.atm.emulator.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +19,7 @@ public class MyUserDetailsService implements UserDetailsService {
     private AccountRepository accountRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String cardnumber) throws UsernameNotFoundException {
-        return (UserDetails) this.accountRepository.findAccountByCardNumber(cardnumber);
+    public Account loadUserByUsername(String cardNumber) throws UsernameNotFoundException {
+        return  this.accountRepository.findAccountByCardNumber(cardNumber);
     }
 }

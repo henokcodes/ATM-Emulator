@@ -2,6 +2,7 @@ package com.atm.emulator.controller;
 
 import com.atm.emulator.dto.AuthenticationRequest;
 import com.atm.emulator.dto.AuthenticationResponse;
+import com.atm.emulator.model.Account;
 import com.atm.emulator.service.MyUserDetailsService;
 import com.atm.emulator.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,11 @@ public class AccountController {
             );
         }
         catch (BadCredentialsException e) {
-            throw new Exception("Incorrect card numvber or password", e);
+            throw new Exception("Incorrect card number or password", e);
         }
 
 
-        final UserDetails userDetails = userDetailsService
+        final Account userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);

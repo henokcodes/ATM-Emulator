@@ -1,6 +1,8 @@
 package com.atm.emulator.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Bank {
 
     @Id
@@ -22,13 +26,8 @@ public class Bank {
     @OneToMany(mappedBy="bank")
     private Set<Account> accounts;
 
-    public Bank() {
+    @OneToMany(mappedBy="bank")
+    private Set<ATM> atms;
 
-    }
-    public Bank(String name, String address, String code) {
-        super();
-        this.name = name;
-        this.address = address;
-        this.code = code;
-    }
+
 }
