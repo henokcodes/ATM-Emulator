@@ -32,11 +32,11 @@ public class OperationsService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public ResponseEntity<Transaction> getTransactionsByAccount(@Valid @RequestBody operationRequest req)
+    public ResponseEntity<Transaction> getTransactionsByAccount(String token, String cardNumber)
             throws ResourceNotFoundException {
 
-        Transaction transaction = transactionRepository.findTransactionByAccount(req)
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found for this Account :: " + account));
+        Transaction transaction = transactionRepository.findTransactionByAccount(userDetails.loadUserByUsername(cardNumber));
+
         return ResponseEntity.ok().body(transaction);
     }
 
@@ -63,23 +63,34 @@ public class OperationsService {
         return ResponseEntity.ok().body(transaction);
     }
 
-    public ResponseEntity<Transaction> deposit(@Valid @RequestBody operationRequest req) {
+    public ResponseEntity<Transaction> deposit(String token, String cardNumber, double amount) {
           logger.debug("Deposit operation");
 
         String STATUS;
         Account account = this.accountRepository.findOne(req)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
             account.setCardBalance(account.getCardBalance() + amount);
+
+        String amt = String.valueOf(amount);
             STATUS = "Successful";
         Transaction transaction = new Transaction();
         transaction.setTransactionStatus(STATUS);
-        transaction.setTransactionAmount(amount);
+        transaction.setTransactionAmount(amt);
         transaction.setTransactionType("Deposit");
         transaction.setAccount(account);
         return ResponseEntity.ok().body(transaction);
     }
+
     public double balance( String token, String cardNumber) {
           logger.debug("check balance");
+        if(jwtUtil.validateToken(token, userDetails.loadUserByUsername(cardNumber))){
+            return userDetails.loadUserByUsername(cardNumber).getCardBalance();
+        }
+        return Double.parseDouble(null);
+    }
+
+    public double balance( String token, String cardNumber) {
+        logger.debug("check balance");
         if(jwtUtil.validateToken(token, userDetails.loadUserByUsername(cardNumber))){
             return userDetails.loadUserByUsername(cardNumber).getCardBalance();
         }

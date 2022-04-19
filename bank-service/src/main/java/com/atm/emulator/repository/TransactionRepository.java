@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query(value = "SELECT * FROM ACCOUNTS WHERE account = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM TRANSACTION WHERE account = ?1", nativeQuery = true)
     Account findTransactionByAccount(Account account);
 }

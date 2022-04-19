@@ -23,7 +23,6 @@ public class TransactionController {
     public ResponseEntity<Transaction> withdraw(@Valid @RequestHeader("Authorization") String token, @RequestBody String cardNumber, @RequestBody double amount) {
         return operationsService.withdraw(token, cardNumber, amount);
     }
-
     @PostMapping("/transactions/deposit")
     public ResponseEntity<Transaction> deposit(@RequestHeader("Authorization") String token, @RequestBody String cardNumber, @RequestBody double amount) {
         return operationsService.deposit(token, cardNumber, amount);
@@ -33,8 +32,8 @@ public class TransactionController {
         return operationsService.balance(token, cardNumber);
     }
     @PostMapping("/transactions/statement")
-    public List<Transaction> printTransactions() throws ResourceNotFoundException {
-        return this.operationsService.getTransactionsByAccount();
+    public List<Transaction> printTransactions(@RequestHeader("Authorization") String token, @RequestBody String cardNumber) throws ResourceNotFoundException {
+        return this.operationsService.getTransactionsByAccount(token,cardNumber);
     }
 
 
