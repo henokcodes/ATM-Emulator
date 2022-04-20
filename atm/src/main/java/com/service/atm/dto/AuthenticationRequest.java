@@ -1,4 +1,4 @@
-package egs.henokcodes.bankservice.dto;
+package com.service.atm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class QueryResponse {
+@AllArgsConstructor
+public class AuthenticationRequest {
     private String cardNumber;
-    private double amount;
+    private String password;
 
 }

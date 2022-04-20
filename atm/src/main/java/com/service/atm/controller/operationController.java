@@ -1,5 +1,6 @@
 package com.service.atm.controller;
 
+import com.service.atm.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,23 +17,19 @@ public class operationController {
     private OperationService operationService;
 
     @PostMapping("/withdraw")
-    public ResponseEntity<String> withdraw(double amount){
-        return this.operationService.withdraw(amount);
+    public ResponseEntity<TransactionResponse> withdraw(@RequestBody TransactionRequest transactionRequest){
+        return this.operationService.withdraw(transactionRequest);
     }
-    @PostMapping("/deposit")
-    public ResponseEntity<String> deposit(double amount){
-        return this.operationService.deposit(amount);
+    @PostMapping("/TransactionResponse")
+    public ResponseEntity<TransactionResponse> deposit(@RequestBody TransactionRequest transactionRequest){
+        return this.operationService.deposit(transactionRequest);
     }
     @PostMapping("/balance")
-    public ResponseEntity<String> balance(){
-        return this.operationService.checkBalance();
+    public ResponseEntity<QueryResponse> balance(@RequestBody QueryRequest queryRequest){
+        return this.operationService.checkBalance(queryRequest);
     }
     @PostMapping("/statement")
-    public ResponseEntity<String> printStatement(){
-        return this.operationService.printStatement();
-    }
-    @GetMapping("/logout")
-    public void logout(){
-        this.operationService.logout();
+    public ResponseEntity<StatementResponse> printStatement(@RequestBody QueryRequest queryRequest){
+        return this.operationService.printStatement(queryRequest);
     }
 }

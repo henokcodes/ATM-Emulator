@@ -1,18 +1,18 @@
-package egs.henokcodes.bankservice.dto;
+package com.service.atm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatementResponse {
-
-        private List<TransactionResponse> transactionsList;
+public class QueryResponse {
+    private String cardNumber;
+    private double amount;
 
 }

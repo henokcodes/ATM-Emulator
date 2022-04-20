@@ -33,8 +33,7 @@ public class OperationService {
     private TransactionRequest transactionRequest;
 
 
-    public ResponseEntity<TransactionResponse> withdraw(String jwt, TransactionRequest transactionRequest) throws Exception {
-        String token = "Bearer " + jwt;
+    public ResponseEntity<TransactionResponse> withdraw(String token, TransactionRequest transactionRequest) throws Exception {
 
         String STATUS;
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
@@ -72,8 +71,7 @@ public class OperationService {
         return (ResponseEntity<TransactionResponse>) ResponseEntity.badRequest();
     }
 
-    public ResponseEntity<TransactionResponse> deposit(String jwt, TransactionRequest transactionRequest) throws Exception {
-        String token = "Bearer " + jwt;
+    public ResponseEntity<TransactionResponse> deposit(String token, TransactionRequest transactionRequest) throws Exception {
         String STATUS;
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
             String cardNumber = transactionRequest.getCardNumber();
@@ -104,8 +102,7 @@ public class OperationService {
         return (ResponseEntity<TransactionResponse>) ResponseEntity.badRequest();
     }
 
-    public ResponseEntity<QueryResponse> balance(String jwt, QueryRequest queryRequest){
-        String token = "Bearer " + jwt;
+    public ResponseEntity<QueryResponse> balance(String token, QueryRequest queryRequest){
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
             logger.debug("Authentication successful");
             String cardNumber = transactionRequest.getCardNumber();
@@ -118,8 +115,7 @@ public class OperationService {
         logger.debug("Authentication error");
         return (ResponseEntity<QueryResponse>) ResponseEntity.badRequest();
     }
-    public ResponseEntity<StatementResponse> statement(String jwt, QueryRequest queryRequest){
-        String token = "Bearer " + jwt;
+    public ResponseEntity<StatementResponse> statement(String token, QueryRequest queryRequest){
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(queryRequest.getCardNumber()))) {
             logger.debug("Authentication successful");
             Account account = this.accountRepository.findAccountByCardNumber(queryRequest.getCardNumber());

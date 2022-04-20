@@ -19,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping( path = "/api/v1/transactions")
 public class OperationController {
     Logger logger = LoggerFactory.getLogger(OperationController.class);
 
