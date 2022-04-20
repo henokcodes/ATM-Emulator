@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QueryResponse {
-    private String cardNumber;
-    private double amount;
+public class StatementResponse {
+
+        private List<TransactionResponse> transactionsList;
 
 }

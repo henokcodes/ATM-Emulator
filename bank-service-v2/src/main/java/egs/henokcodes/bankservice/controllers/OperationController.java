@@ -50,9 +50,17 @@ public class OperationController {
     public ResponseEntity<TransactionResponse> deposit(@RequestHeader("Authorization") String token,@RequestBody TransactionRequest transactionRequest) throws Exception {
         return this.operationService.deposit(token,transactionRequest);
     }
+    @PostMapping(value = "/balance")
+    public ResponseEntity<QueryResponse> balance(@RequestHeader("Authorization") String token,@RequestBody QueryRequest queryRequest) throws Exception {
+        return this.operationService.balance(token,queryRequest);
+    }
+    @PostMapping(value = "/statement")
+    public ResponseEntity<QueryResponse> statement(@RequestHeader("Authorization") String token,@RequestBody QueryRequest queryRequest) throws Exception {
+        return this.operationService.statement(token,queryRequest);
+    }
 
 
-        @PostMapping(value = "/authenticate")
+    @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(

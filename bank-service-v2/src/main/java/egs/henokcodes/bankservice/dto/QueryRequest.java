@@ -9,5 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class QueryRequest {
+    private String cardNumber;
 }

@@ -1,6 +1,8 @@
 package egs.henokcodes.bankservice.services;
 
 import egs.henokcodes.bankservice.controllers.OperationController;
+import egs.henokcodes.bankservice.dto.QueryRequest;
+import egs.henokcodes.bankservice.dto.QueryResponse;
 import egs.henokcodes.bankservice.dto.TransactionRequest;
 import egs.henokcodes.bankservice.dto.TransactionResponse;
 import egs.henokcodes.bankservice.models.Account;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 
@@ -30,7 +33,9 @@ public class OperationService {
     private TransactionRequest transactionRequest;
 
 
-    public ResponseEntity<TransactionResponse> withdraw(String token, TransactionRequest transactionRequest) throws Exception {
+    public ResponseEntity<TransactionResponse> withdraw(String jwt, TransactionRequest transactionRequest) throws Exception {
+        String token = "Bearer " + jwt;
+
         String STATUS;
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
             String cardNumber = transactionRequest.getCardNumber();
@@ -65,7 +70,8 @@ public class OperationService {
         return (ResponseEntity<TransactionResponse>) ResponseEntity.badRequest();
     }
 
-    public ResponseEntity<TransactionResponse> deposit(String token, TransactionRequest transactionRequest) throws Exception {
+    public ResponseEntity<TransactionResponse> deposit(String jwt, TransactionRequest transactionRequest) throws Exception {
+        String token = "Bearer " + jwt;
         String STATUS;
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
             String cardNumber = transactionRequest.getCardNumber();
@@ -94,4 +100,26 @@ public class OperationService {
 
         return (ResponseEntity<TransactionResponse>) ResponseEntity.badRequest();
     }
+
+    public ResponseEntity<QueryResponse> balance(String jwt, QueryRequest queryRequest){
+        String token = "Bearer " + jwt;
+        if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
+            String cardNumber = transactionRequest.getCardNumber();
+            Account account = this.accountRepository.findAccountByCardNumber(cardNumber);
+            QueryResponse response = new QueryResponse();
+            response.setCardNumber(cardNumber);
+            response.setAmount(account.getCardBalance());
+            return ResponseEntity.ok().body(response);
+        }
+        return (ResponseEntity<QueryResponse>) ResponseEntity.badRequest();
+    }
+    public ResponseEntity<QueryResponse> statement(String jwt, QueryRequest queryRequest){
+        String token = "Bearer " + jwt;
+        if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
+
+        }
+        return (ResponseEntity<QueryResponse>) ResponseEntity.badRequest();
+    }
+
+
 }

@@ -11,7 +11,7 @@
 	<groupId>egs.henokcodes</groupId>
 	<artifactId>egs-bank-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Bank serivce for ATM-Emulator</name>
+	<name>Bank service for ATM-Emulator</name>
 	<description>fat-client that handle all the basic operations of an ATM and also authenticate user via card number / pin</description>
 
 	<properties>
