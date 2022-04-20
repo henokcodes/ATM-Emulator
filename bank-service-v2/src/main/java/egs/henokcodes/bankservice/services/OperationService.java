@@ -1,13 +1,11 @@
 package egs.henokcodes.bankservice.services;
 
 import egs.henokcodes.bankservice.controllers.OperationController;
-import egs.henokcodes.bankservice.dto.QueryRequest;
-import egs.henokcodes.bankservice.dto.QueryResponse;
-import egs.henokcodes.bankservice.dto.TransactionRequest;
-import egs.henokcodes.bankservice.dto.TransactionResponse;
+import egs.henokcodes.bankservice.dto.*;
 import egs.henokcodes.bankservice.models.Account;
 import egs.henokcodes.bankservice.models.Transaction;
 import egs.henokcodes.bankservice.repository.AccountRepository;
+import egs.henokcodes.bankservice.repository.TransactionRepository;
 import egs.henokcodes.bankservice.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class OperationService {
@@ -25,11 +24,12 @@ public class OperationService {
 
     @Autowired
     private JwtUtil jwtUtil;
-
     @Autowired
     private MyUserDetailsService userDetailsService;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
     private TransactionRequest transactionRequest;
 
 
@@ -56,6 +56,7 @@ public class OperationService {
             transaction.setTransactionType("WITHDRAW");
             transaction.setAccount(account);
             transaction.setTimestamp(LocalDate.now());
+            this.transactionRepository.save(transaction);
 
             TransactionResponse transactionResponse = new TransactionResponse();
             transactionResponse.setCardNumber(account.getCardNumber());
@@ -63,6 +64,7 @@ public class OperationService {
             transactionResponse.setTransactionStatus(STATUS);
             transactionResponse.setTransactionType("WITHDRAW");
             transactionResponse.setTimestamp(LocalDate.now());
+
 
             return ResponseEntity.ok().body(transactionResponse);
         }
@@ -86,6 +88,7 @@ public class OperationService {
             transaction.setTransactionType("DEPOSIT");
             transaction.setAccount(account);
             transaction.setTimestamp(LocalDate.now());
+            this.transactionRepository.save(transaction);
 
             TransactionResponse transactionResponse = new TransactionResponse();
             transactionResponse.setCardNumber(account.getCardNumber());
@@ -104,6 +107,7 @@ public class OperationService {
     public ResponseEntity<QueryResponse> balance(String jwt, QueryRequest queryRequest){
         String token = "Bearer " + jwt;
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
+            logger.debug("Authentication successful");
             String cardNumber = transactionRequest.getCardNumber();
             Account account = this.accountRepository.findAccountByCardNumber(cardNumber);
             QueryResponse response = new QueryResponse();
@@ -111,14 +115,21 @@ public class OperationService {
             response.setAmount(account.getCardBalance());
             return ResponseEntity.ok().body(response);
         }
+        logger.debug("Authentication error");
         return (ResponseEntity<QueryResponse>) ResponseEntity.badRequest();
     }
-    public ResponseEntity<QueryResponse> statement(String jwt, QueryRequest queryRequest){
+    public ResponseEntity<StatementResponse> statement(String jwt, QueryRequest queryRequest){
         String token = "Bearer " + jwt;
-        if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(transactionRequest.getCardNumber()))) {
-
+        if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(queryRequest.getCardNumber()))) {
+            logger.debug("Authentication successful");
+            Account account = this.accountRepository.findAccountByCardNumber(queryRequest.getCardNumber());
+            Transaction transaction = this.transactionRepository.findTransactionByAccount(account);
+            StatementResponse statementResponse = new StatementResponse();
+            statementResponse.setTransactionsList((List<TransactionResponse>) transaction);
+            return ResponseEntity.ok().body(statementResponse);
         }
-        return (ResponseEntity<QueryResponse>) ResponseEntity.badRequest();
+        logger.debug("Authentication error");
+        return (ResponseEntity<StatementResponse>) ResponseEntity.badRequest();
     }
 
 

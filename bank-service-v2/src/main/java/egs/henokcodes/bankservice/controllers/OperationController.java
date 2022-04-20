@@ -36,11 +36,6 @@ public class OperationController {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-    @GetMapping({ "/hello" })
-    public String firstPage() {
-        return "Hello World";
-    }
-
 
     @PostMapping(value = "/withdraw")
     public ResponseEntity<TransactionResponse> withdraw(@RequestHeader("Authorization") String token,@RequestBody TransactionRequest transactionRequest) throws Exception {
@@ -55,7 +50,7 @@ public class OperationController {
         return this.operationService.balance(token,queryRequest);
     }
     @PostMapping(value = "/statement")
-    public ResponseEntity<QueryResponse> statement(@RequestHeader("Authorization") String token,@RequestBody QueryRequest queryRequest) throws Exception {
+    public ResponseEntity<StatementResponse> statement(@RequestHeader("Authorization") String token,@RequestBody QueryRequest queryRequest) throws Exception {
         return this.operationService.statement(token,queryRequest);
     }
 
