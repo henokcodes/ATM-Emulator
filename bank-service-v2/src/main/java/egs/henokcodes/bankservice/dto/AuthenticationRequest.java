@@ -12,5 +12,6 @@ import lombok.Setter;
 public class AuthenticationRequest {
     private String cardNumber;
     private String password;
+    private int remainingAttempt;
 
 }

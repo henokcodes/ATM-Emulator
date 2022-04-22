@@ -57,22 +57,27 @@ public class OperationController {
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getCardNumber(), authenticationRequest.getPassword())
-            );
+        Account acc = this.accountRepository.findAccountByCardNumber(authenticationRequest.getCardNumber());
+        Account account = new Account();
+        if (authenticationRequest.getRemainingAttempt() > 0) {
+            try {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(authenticationRequest.getCardNumber(), authenticationRequest.getPassword())
+                );
+                account.setRemainingAttempt(3);
+            } catch (BadCredentialsException e) {
+               account.setRemainingAttempt(acc.getRemainingAttempt()-1);
+                throw new Exception("Incorrect credentials", e);
+            }
+            final UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(authenticationRequest.getCardNumber());
+
+            final String jwt = jwtTokenUtil.generateToken(userDetails);
+
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        }else{
+            return ResponseEntity.badRequest().body("Card Blocked");
         }
-        catch (BadCredentialsException e) {
-            throw new Exception("Incorrect credentials", e);
-        }
-
-
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getCardNumber());
-
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
 }

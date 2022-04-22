@@ -33,7 +33,7 @@ public class Account implements UserDetails {
     private Customer customer;
 
     private String cardNumber;
-
+    private int remainingAttempt = 3;
     private double cardBalance;
     private String expireDate;
     private String issueDate;
