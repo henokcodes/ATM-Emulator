@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 @Service
 public class OperationService {
 
-        static private String Auth_token = "secret";
     //all constants will be in an external file
     private static final String GET_ALL_TRANSACTIONS = "http://localhost:8080/api/v1/transactions/statement";
     private static final String WITHDRAW_TRANSACTION = "http://localhost:8080/api/v1/transactions/withdraw";

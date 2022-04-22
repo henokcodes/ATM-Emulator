@@ -40,9 +40,9 @@ public class OperationServiceTest {
     @Test
     public void testBalance() {
         QueryRequest queryRequest = new QueryRequest();
-        queryRequest.setCardNumber("1234567890123456");
+        queryRequest.setCardNumber("374245455400126");
         Account account = new Account();
-        account.setCardNumber("1234567890123456");
+        account.setCardNumber("374245455400126");
         account.setCardBalance(1000);
         when(accountRepository.findAccountByCardNumber(queryRequest.getCardNumber())).thenReturn(account);
         when(jwtUtil.validateToken("token", userDetailsService.loadUserByUsername(queryRequest.getCardNumber()))).thenReturn(true);
@@ -69,11 +69,11 @@ public class OperationServiceTest {
     public void testDeposit() throws Exception {
         String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTg1NzYwNzQ5LCJleHAiOjE1ODU3NjQzNDl9.X-_7Zq-8q6Z4_2Xv-y7KVnWYk8p5f4m6_2QrLcRtXvhHp9ZKqywB8uWYV-sD5k6e_2F7f0P3g1xT4CnLmQrXcA";
         TransactionRequest transactionRequest = new TransactionRequest();
-        transactionRequest.setCardNumber("1234567890");
+        transactionRequest.setCardNumber("374245455400126");
         transactionRequest.setAmount(100);
 
         Account account = new Account();
-        account.setCardNumber("1234567890");
+        account.setCardNumber("374245455400126");
         account.setCardBalance(100);
 
         Transaction transaction = new Transaction();
@@ -84,7 +84,7 @@ public class OperationServiceTest {
         transaction.setTimestamp(LocalDate.now());
 
         TransactionResponse transactionResponse = new TransactionResponse();
-        transactionResponse.setCardNumber("1234567890");
+        transactionResponse.setCardNumber("374245455400126");
         transactionResponse.setTransactionAmount(100);
         transactionResponse.setTransactionStatus("Successful");
         transactionResponse.setTransactionType("DEPOSIT");
